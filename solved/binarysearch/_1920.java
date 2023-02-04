@@ -3,6 +3,7 @@ package solved.binarysearch;
 import java.util.*;
 import java.io.*;
 
+// 간단한 이분탐색 문제
 public class _1920 {
 
 	public static void main(String[] args) throws Exception {

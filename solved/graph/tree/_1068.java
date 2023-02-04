@@ -3,6 +3,7 @@ package solved.graph.tree;
 import java.util.*;
 import java.io.*;
 
+// 트리 부모, 자식 찾기 문제
 public class _1068 {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

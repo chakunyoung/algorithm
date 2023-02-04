@@ -3,6 +3,7 @@ package solved.bfsdfs;
 import java.util.*;
 import java.io.*;
 
+// 간단한 flood fill 문제
 public class _2583 {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

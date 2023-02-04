@@ -3,6 +3,7 @@ package solved.graph.djikstra;
 import java.util.*;
 import java.io.*;
 
+// 다익스트라 
 public class _18352 {
 	static int[] dist;
 
