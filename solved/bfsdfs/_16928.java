@@ -1,10 +1,10 @@
-import java.util.*;
-import java.io.*;
+package solved.bfsdfs;
 
 import java.util.*;
 import java.io.*;
 
-public class Main {
+// bfs 조건 문제
+public class _16928 {
 	static int min = Integer.MAX_VALUE;
 	static Map<Integer, Integer> m;
 
