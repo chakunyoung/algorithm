@@ -52,7 +52,9 @@ public class _4195 {
 	public static String find(String str) {
 		if (m.get(str).equals(str)) 
 			return str;
-		return find(m.get(str));
+		String str1 = find(m.get(str));
+		m.put(str, str1);
+		return str1;
 	}
 
 	public static boolean union(String str1, String str2) {
