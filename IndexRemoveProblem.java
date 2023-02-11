@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class IndexRemoveProblem {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,6 +17,7 @@ public class Main {
 		for(int i = 0; i<list.size(); i++) {
 			if(list.get(i) % 2== 0) {
 				list.remove((Integer) i);
+				i--;
 			}
 			System.out.println(list + " " + i);
 		}
