@@ -24,9 +24,8 @@ public class _19237 {
 
 		arr = new Node[size][size];
 		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+			for (int j = 0; j < size; j++)
 				arr[i][j] = new Node(i, j);
-			}
 		}
 
 		sharks.add(new SharkNode(-1, -1, -1, -1)); // index 0번 사용 안함
@@ -35,9 +34,8 @@ public class _19237 {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < size; j++) {
 				int sharkNumber = Integer.parseInt(st.nextToken());
-				if (sharkNumber != 0) {
+				if (sharkNumber != 0)
 					sharks.add(new SharkNode(i, j, sharkNumber, 0));
-				}
 			}
 		}
 		Collections.sort(sharks, (o1, o2) -> o1.sharkNumber - o2.sharkNumber);
@@ -82,20 +80,20 @@ public class _19237 {
 
 			// 1번 상어가 큐의 가장 마지막, 1회전 종료 조건
 			if (shark.sharkNumber == 1) {
+				answerTime++;
 				decreaseSmellNode(); // 냄새 시간 감소
 				removeDeadShark(); // 상어 제거
 				// ->
 				createSmellNode(); // 현재 위치 냄새 생성
 
-				for (Node[] nn : arr) {
-					System.out.println(Arrays.toString(nn));
-				}
-				System.out.println(smells);
-				System.out.println();
+//				for (Node[] nn : arr) {
+//					System.out.println(Arrays.toString(nn));
+//				}
+//				System.out.println(smells);
+//				System.out.println();
+//
+//				System.out.println(answerTime);
 
-				System.out.println(answerTime);
-				
-				answerTime++;
 				if (answerTime > 1000) {
 					answerTime = -1;
 					return;
@@ -107,15 +105,15 @@ public class _19237 {
 		}
 	}
 
-	// 상어의 현재 위치에 생성, 재사용
+	// 상어의 현재 위치에 smell 생성, 있다면 재사용
 	public static void createSmellNode() {
 		for (int i = 1; i < sharks.size(); i++) {
 			SharkNode shark = sharks.get(i);
 			Node node = arr[shark.x][shark.y];
-			
-			if(node.sharkNumber == 0) 
+
+			if (node.sharkNumber == 0)
 				smells.add(node);
-			
+
 			node.sharkNumber = shark.sharkNumber;
 			node.time = setTime;
 		}
@@ -136,23 +134,20 @@ public class _19237 {
 		}
 	}
 
+	// -- index remove 문제
 	public static void removeDeadShark() {
+		List<SharkNode> removeList = new ArrayList<>();
 		for (int i = 1; i < sharks.size() - 1; i++) {
 			for (int j = i + 1; j < sharks.size(); j++) {
 				SharkNode shark1 = sharks.get(i);
 				SharkNode shark2 = sharks.get(j);
-
 				if (shark1.x == shark2.x && shark1.y == shark2.y) {
-					if (shark1.sharkNumber > shark2.sharkNumber) {
-						sharks.remove(shark1);
-						shark1.survive = false;
-					} else {
-						sharks.remove(shark2);
-						shark2.survive = false;
-					}
+					removeList.add(shark2);
+					shark2.survive = false;
 				}
 			}
 		}
+		sharks.removeAll(removeList);
 	}
 
 	public static boolean sharkMove(SharkNode shark, int flag) {
@@ -223,4 +218,12 @@ class SharkNode extends Node {
 	public void setMoveList(int row, int col) {
 		moveList.get(row).add(col);
 	}
+	
+	public String toString() {
+		return sharkNumber + " ";
+	}
 }
+
+// 1000 문제인줄 알았는데,
+// shark remove가 제대로 안되는 문제
+
