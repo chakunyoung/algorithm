@@ -15,7 +15,15 @@ public class _19237 {
 	static int setTime;
 	static int answerTime;
 
+	// main
 	public static void main(String[] args) throws Exception {
+		input();
+		q();
+		System.out.println(answerTime);
+	}
+
+	// input
+	public static void input() throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int size = Integer.parseInt(st.nextToken());
@@ -52,19 +60,16 @@ public class _19237 {
 					sharks.get(i).setMoveList(j, Integer.parseInt(st.nextToken()) - 1);
 			}
 		}
-
-		q();
-
-		System.out.println(answerTime);
 	}
 
+	// 로직 시작
 	public static void q() {
 		Queue<SharkNode> q = new LinkedList<>();
 
 		// 초기 조건
 		for (int i = 2; i < sharks.size(); i++)
 			q.offer(sharks.get(i));
-		q.offer(sharks.get(1));
+		q.offer(sharks.get(1)); // 1번 상어를 기준으로 1회전 마감
 		createSmellNode();
 
 		while (!q.isEmpty()) {
@@ -78,7 +83,7 @@ public class _19237 {
 
 			q.offer(shark);
 
-			// 1번 상어가 큐의 가장 마지막, 1회전 종료 조건
+			// 1번 상어가 큐의 가장 마지막
 			if (shark.sharkNumber == 1) {
 				answerTime++;
 				decreaseSmellNode(); // 냄새 시간 감소
@@ -86,13 +91,13 @@ public class _19237 {
 				// ->
 				createSmellNode(); // 현재 위치 냄새 생성
 
-//				for (Node[] nn : arr) {
-//					System.out.println(Arrays.toString(nn));
-//				}
-//				System.out.println(smells);
-//				System.out.println();
-//
-//				System.out.println(answerTime);
+				// debug
+				System.out.println(answerTime);
+				for (Node[] nn : arr) {
+					System.out.println(Arrays.toString(nn));
+				}
+				System.out.println(smells);
+				System.out.println();
 
 				if (answerTime > 1000) {
 					answerTime = -1;
@@ -119,6 +124,7 @@ public class _19237 {
 		}
 	}
 
+	// smell을 1씩 줄이고, 0이 됐다면 노드초기화, smellList에서 제거
 	public static void decreaseSmellNode() {
 		Iterator<Node> it = smells.iterator();
 		while (it.hasNext()) {
@@ -135,6 +141,7 @@ public class _19237 {
 	}
 
 	// -- index remove 문제
+	// x, y같은 위치에 있는 높은 번호 상어 제거
 	public static void removeDeadShark() {
 		List<SharkNode> removeList = new ArrayList<>();
 		for (int i = 1; i < sharks.size() - 1; i++) {
@@ -150,6 +157,8 @@ public class _19237 {
 		sharks.removeAll(removeList);
 	}
 
+	// 상어이동
+	// 0 빈공간이동 -> 1 냄새공간이동
 	public static boolean sharkMove(SharkNode shark, int flag) {
 		int[] xRange = { -1, 1, 0, 0 };
 		int[] yRange = { 0, 0, -1, 1 };
@@ -218,7 +227,7 @@ class SharkNode extends Node {
 	public void setMoveList(int row, int col) {
 		moveList.get(row).add(col);
 	}
-	
+
 	public String toString() {
 		return sharkNumber + " ";
 	}
@@ -226,4 +235,3 @@ class SharkNode extends Node {
 
 // 1000 문제인줄 알았는데,
 // shark remove가 제대로 안되는 문제
-
