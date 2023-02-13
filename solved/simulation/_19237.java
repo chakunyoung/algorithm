@@ -204,7 +204,7 @@ class SharkNode extends Node {
 	}
 	
 	public String toString() {
-		return (this.x+1) + " " + (this.y+1) + " sn" +sharkNumber + " " + dir;
+		return (this.x+1) + "," + (this.y+1) + " sn" +sharkNumber + " " + dir;
 	}
 	
 }

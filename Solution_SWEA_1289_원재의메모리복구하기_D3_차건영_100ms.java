@@ -3,24 +3,22 @@ import java.io.*;
  
 class Solution_SWEA_1289_원재의메모리복구하기_D3_차건영_100ms{
     public static void main(String args[]) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int count = Integer.parseInt(br.readLine());
- 
-        for(int i =1; i<=count; i++) {
-            char n = '0'; 
-            String arr = br.readLine();
-            int amend = 0;
- 
-            for(int j = 0; j<arr.length(); j++){
-                if(!(arr.charAt(j) == n)){
-                	amend++;
-                    if(n == '0')
-                        n = '1';
-                    else
-                        n = '0';
-                }
-            }
-            System.out.println("#" + i +  " " +amend);
-        }
+        
+    	List<Integer> list = new LinkedList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+    	
+    	
+    	Iterator<Integer> it1 = list.iterator();
+    	Iterator<Integer> it2 = list.iterator();
+    	
+    	
+    	while(it1.hasNext()) {
+    		int n1 = it1.next();
+    		while(it2.hasNext()) {
+    			int n2 = it2.next();
+    			System.out.println(n1 + " " + n2);
+    			
+    		}
+    	}
+    	System.out.println(list);
     }
 }
