@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
  
-class Solution_SWEA_1289_원재의메모리복구하기_D3_차건영_100ms{
+class IteratorTest{
     public static void main(String args[]) throws Exception{
         
     	List<Integer> list = new LinkedList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
