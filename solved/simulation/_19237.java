@@ -227,23 +227,6 @@ class SharkNode extends Node {
 	public void setMoveList(int row, int col) {
 		moveList.get(row).add(col);
 	}
-
-	public String toString() {
-		return (this.x + 1) + "," + (this.y + 1) + " sn" + sharkNumber + " " + dir;
-	}
-
-}
-
-class SmellNode extends Node {
-	int sharkNumber;
-	int k;
-
-	public SmellNode(int x, int y, int sharkNumber, int k) {
-		super(x, y);
-		this.sharkNumber = sharkNumber;
-		this.k = k;
-
-	}
 }
 
 // 1000 문제인줄 알았는데,
