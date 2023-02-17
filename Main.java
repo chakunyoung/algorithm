@@ -8,6 +8,7 @@ import java.io.*;
 // 2번 움직이고 이동량 증가
 // 이동량 전부 소모하면, dir 변화
 
+
 public class Main {
 
 	static int[][] arr;
