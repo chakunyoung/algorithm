@@ -19,6 +19,26 @@ public class IndexRemoveProblem {
 			System.out.println(list);
 			i++;
 		}
+		
+		
+		// Iterator
+		List<Integer> list1 = new LinkedList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+    	Iterator<Integer> it1 = list1.iterator();
+    	
+    	while(it1.hasNext()) {
+    		int n1 = it1.next();
+    		if(n1 == 3)
+    			it1.remove();
+    		Iterator<Integer> it2 = list1.iterator();
+    		while(it2.hasNext()) {
+    			int n2 = it2.next();
+    			System.out.println(n1 + " " + n2);
+    			
+    		}
+    	}
+    	System.out.println(list1);
+		
+		
 	}
 }
 /*
