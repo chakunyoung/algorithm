@@ -1,4 +1,5 @@
 package solved.simulation;
+
 import java.util.*;
 import java.io.*;
 
@@ -11,13 +12,20 @@ import java.io.*;
 // 시간 소요된 곳 -> 두군데서 모두 처리해줘야 하는 부분을 if else로 나눠, 한군데에서만 처리해 디버깅이 오래걸림
 
 public class _20057 {
-	
+
 	static int[][] arr;
 	static int size;
 	static int answerSandAmount;
 
 	static int[] xrange = { 0, 1, 0, -1 };
 	static int[] yrange = { -1, 0, 1, 0 };
+	static int[][] tempSand = new int[5][5];
+	
+	static final int[][] sandPercentCopy = { { -1, -1, 2, -1, -1 }, { -1, 10, 7, 1, -1 }, { 5, -1, -1, -1, -1 },
+			{ -1, 10, 7, 1, -1 }, { -1, -1, 2, -1, -1 }, };
+	static int[][] sandPercent = { { -1, -1, 2, -1, -1 }, { -1, 10, 7, 1, -1 }, { 5, -1, -1, -1, -1 },
+			{ -1, 10, 7, 1, -1 }, { -1, -1, 2, -1, -1 }, };
+	
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -77,10 +85,9 @@ public class _20057 {
 	// 움직인 이후 모래 계산
 	public static void sandCalc(Tornado t) {
 		// 움직인 이후가 기준
-		int[][] sandPercent = { { -1, -1, 2, -1, -1 }, { -1, 10, 7, 1, -1 }, { 5, -1, -1, -1, -1 },
-				{ -1, 10, 7, 1, -1 }, { -1, -1, 2, -1, -1 }, };
+		for (int i = 0; i < 5; i++)
+			System.arraycopy(sandPercentCopy[i], 0, sandPercent[i], 0, 5);
 
-		int[][] tempSand = new int[5][5];
 		for (int k = 0; k < t.dir; k++) { // dir 에 맞게 회전
 			for (int i = 0; i < 5; i++) {
 				for (int j = 0; j < 5; j++) {
@@ -107,8 +114,8 @@ public class _20057 {
 				int locSand = (int) (t.sandAmount * (sandPercent[sandPercentX][sandPercentY] * 0.01));
 
 				// 토네이도 위치를 기준으로 조정
-				int arrX = t.x + i; 
-				int arrY = t.y + j; 
+				int arrX = t.x + i;
+				int arrY = t.y + j;
 
 				totalSandAmount -= locSand;
 				if (arrX >= 0 && arrY >= 0 && arrX < size && arrY < size) { // 기존 모래와 합쳐짐
