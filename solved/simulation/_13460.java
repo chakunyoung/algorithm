@@ -1,3 +1,5 @@
+package solved.simulation;
+
 import java.util.*;
 import java.io.*;
 
@@ -7,7 +9,7 @@ import java.io.*;
  *
  * 
  * */
-public class Main {
+public class _13460 {
 
 	static int[] xdir = { 1, -1, 0, 0 };
 	static int[] ydir = { 0, 0, 1, -1 };
