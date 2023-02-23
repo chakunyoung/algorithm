@@ -63,6 +63,7 @@ public class _13460 {
 				return;
 			}
 
+			// 큐에 넣어준 이후 초기화 필요
 			for (int i = 0; i < 4; i++) {
 				int prevx = red.x;
 				int prevy = red.y;

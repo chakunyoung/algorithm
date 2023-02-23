@@ -14,9 +14,14 @@ public class NP {
 		// 전처리 : 오름차순 정렬
 		Arrays.sort(input);
 
+		int total = 0;
+		
 		do {
 			System.out.println(Arrays.toString(input));
+			total++;
 		} while (np(input));
+		
+		System.out.println(total);
 
 	}
 
