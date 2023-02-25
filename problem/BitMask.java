@@ -15,5 +15,26 @@ public class BitMask {
 			}
 			System.out.println();
 		}
+		
+		
+		System.out.println("=================================================");
+		int a = 0;
+		
+		a = a | 1 << 31;
+		System.out.println(Integer.toBinaryString(a));
+		System.out.println("=================================================");
+		
+		a = a | 1 << 3;
+		a = a | 1 << 1;
+		a = a | 1 << 0;
+		System.out.println(Integer.toBinaryString(a));
+		
+		a = a & ~(1 << 1);
+		System.out.println(Integer.toBinaryString(a));
+		
+		System.out.println("=================================================");
+		System.out.println((a & (1<<31)) != 0);
+		System.out.println((a & (1<<31)) == 0);
+		
 	}
 }
