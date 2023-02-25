@@ -1,3 +1,4 @@
+package fail;
 import java.util.*;
 import java.io.*;
 

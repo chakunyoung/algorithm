@@ -1,5 +1,6 @@
+package problem;
 
-public class Know {
+public class BitMask {
 	public static void main(String[] args) {
 		int n = 5;
 		int[] arr = { 1, 2, 3, 4, 5 };

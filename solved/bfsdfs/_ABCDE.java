@@ -1,5 +1,14 @@
+package solved.bfsdfs;
 import java.util.*;
 import java.io.*;
+
+/* TODO
+ * 
+ * 모든 노드 DFS하기 싫어서
+ * 트리의 지름으로 접근했으나,
+ * 서킷때문에 불가능해서 다시 품
+ * 
+ */ 
 
 public class _ABCDE {
 
@@ -31,9 +40,7 @@ public class _ABCDE {
 		for (int i = 0; i < node; i++) {
 			if (maxDepth == 4)
 				break;
-			v[i] = true; // 하..
 			dfs(i, 0);
-			v[i] = false;
 			Arrays.fill(v, false);
 		}
 		System.out.println(maxDepth == 4 ? 1 : 0);
@@ -44,13 +51,12 @@ public class _ABCDE {
 			maxDepth = 4;
 			return;
 		}
-
+        v[s] = true;
 		for (int e : list.get(s)) {
 			if (!v[e]) {
-				v[e] = true;
 				dfs(e, depth + 1);
-				v[e] = false;
 			}
 		}
+        v[s] = false;
 	}
 }
