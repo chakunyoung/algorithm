@@ -3,228 +3,132 @@ import java.util.*;
 import java.io.*;
 
 /* TODO
+ * 최단 경로를 찾아야하므로 bfs 
  * 
- * 
+ * Turn dir: dir은 left 또는 right 이며, 각각 왼쪽 또는 오른쪽으로 90° 회전한다.
+ *
  */
 
 public class Main {
 
-	static char[][] arr = new char[9][9]; // 윗면들
-	static char[][] bottom = new char[3][3]; // 바닥면
+	// 위 오 아 왼
+	static int[] xdir = { -1, 0, 1, 0 };
+	static int[] ydir = { 0, 1, 0, -1 };
 
-	static char[][] temp = new char[3][3];
-	static char[][] arrTemp = new char[9][9];
-	static char[] threeTemp = new char[3];
-
-	/*
-	 * U: 윗 면, D: 아랫 면, F: 앞 면, B: 뒷 면, L: 왼쪽 면, R: 오른쪽 면 + 시계 방향 (그 면을 바라봤을 때가 기준),
-	 * -반시계 방향
-	 */
+	static int[][] arr;
+	static int minDistCount = 0;
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
 
-		int testCase = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine());
 
-		for (int i = 0; i < testCase; i++) {
-			recolor();
-			br.readLine();
+		int row = Integer.parseInt(st.nextToken());
+		int col = Integer.parseInt(st.nextToken());
+
+		arr = new int[row][col];
+
+		for (int i = 0; i < row; i++) {
 			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < col; j++)
+				arr[i][j] = Integer.parseInt(st.nextToken());
+		}
 
-			while (st.hasMoreTokens()) {
-				String s = st.nextToken();
-				char c = s.charAt(0);
+		// 출발 지점과 바라보는 방향
+		st = new StringTokenizer(br.readLine());
+		int rx = Integer.parseInt(st.nextToken()) - 1;
+		int ry = Integer.parseInt(st.nextToken()) - 1;
+		int dir = dirInit(Integer.parseInt(st.nextToken()));
+		Robot initRobot = new Robot(rx, ry, dir, 0);
 
-				if (c == 'L' || c == 'R')
-					lr(s);
-				else if (c == 'F' || c == 'B')
-					fb(s);
-				else if (c == 'U' || c == 'D')
-					ud(s);
+		// 도착지
+		st = new StringTokenizer(br.readLine());
+		int locx = Integer.parseInt(st.nextToken()) - 1;
+		int locy = Integer.parseInt(st.nextToken()) - 1;
+		int locdir = dirInit(Integer.parseInt(st.nextToken()));
+		Robot arrRobot = new Robot(locx, locy, locdir, 0);
 
+		bfs(initRobot, arrRobot);
+		System.out.println(minDistCount);
+	}
+
+	public static void bfs(Robot initRobot, Robot arrRobot) {
+		Queue<Robot> q = new ArrayDeque<>();
+		q.offer(initRobot);
+		arr[initRobot.x][initRobot.y] = 1;
+
+		while (!q.isEmpty()) {
+			Robot r = q.poll();
+
+			// 도착
+			if (r.x == arrRobot.x && r.y == arrRobot.y) {
+				minDistCount += Math.abs(arrRobot.dir - r.dir) + r.moveDist;
+				return;
 			}
 
-			// debug
-			for (int i1 = 0; i1 < arr.length; i1++)
-				System.out.println(Arrays.toString(arr[i1]));
+			for (int i = 0; i < 4; i++) {
+				int nx = r.x + xdir[i];
+				int ny = r.y + ydir[i];
 
-		}
+				if (nx >= 0 && ny >= 0 && nx < arr.length && ny < arr[0].length && arr[nx][ny] == 0) {
+					if (r.dir == i) { // 전진
+						forward(r, q);
 
-	}
+					} else if ((4 + r.dir - 1) % 4 == i) { // 왼쪽
+						q.offer(new Robot(r.x, r.y, (4 + r.dir - 1) % 4, r.moveDist + 1));
 
-	// 앞면 뒷면 // 구현
-	public static void fb(String s) {
+					} else if ((r.dir + 1) % 4 == i) { // 오른쪽
+						q.offer(new Robot(r.x, r.y, (r.dir + 1) % 4, r.moveDist + 1));
 
-	}
+					} else if ((r.dir + 2) % 4 == i) { // 뒤
+						q.offer(new Robot(r.x, r.y, (r.dir + 2) % 4, r.moveDist + 2));
 
-	// 왼쪽 오른쪽
-	public static void lr(String s) {
-		char lr = s.charAt(0);
-		char clock = s.charAt(1);
-		int col;
-
-		if (lr == 'L')
-			col = 3;
-		else
-			col = 5;
-
-		if (clock == '+') { // 아래로
-			for (int i = 0; i < 3; i++)
-				threeTemp[i] = arr[i + 6][col];
-
-			for (int i = 0; i < 6; i++)
-				arr[i + 3][col] = arr[i][col];
-
-			for (int i = 0; i < 3; i++)
-				arr[i][col] = threeTemp[i];
-
-			sideRotation(3, 0, clock);
-		} else {
-			for (int i = 0; i < 3; i++)
-				threeTemp[i] = arr[i][col];
-
-			for (int i = 0; i < 6; i++)
-				arr[i][col] = arr[i + 3][col];
-
-			for (int i = 0; i < 3; i++)
-				arr[i + 6][col] = threeTemp[i];
-
-			sideRotation(3, 6, clock);
-		}
-	}
-
-	// 윗면 아랫면
-	public static void ud(String s) {
-		char ud = s.charAt(0);
-		char clock = s.charAt(1);
-
-		if (ud == 'U') {
-			if (clock == '+') {
-				for (int i = 2; i <= 6; i++) {
-					for (int j = 2; j <= 6; j++) {
-						arrTemp[j][9 - 1 - i] = arr[i][j];
-					}
-				}
-				for (int i = 2; i <= 6; i++) {
-					for (int j = 2; j <= 6; j++) {
-						arr[i][j] = arrTemp[i][j];
-					}
-				}
-			} else {
-				for (int i = 2; i <= 6; i++) {
-					for (int j = 2; j <= 6; j++) {
-						arrTemp[9 - 1 - j][i] = arr[i][j];
-					}
-				}
-				for (int i = 2; i <= 6; i++) {
-					for (int j = 2; j <= 6; j++) {
-						arr[i][j] = arrTemp[i][j];
 					}
 				}
 			}
-		} else {
-			if (clock == '+') {
-				for (int i = 0; i < 3; i++)
-					threeTemp[i] = arr[0][3 + i];
-
-				for (int i = 0; i < 3; i++)
-					arr[0][5 - i] = arr[i + 3][0];
-
-				for (int i = 0; i < 3; i++)
-					arr[3 + i][0] = arr[8][3 + i];
-
-				for (int i = 0; i < 3; i++)
-					arr[8][3 + i] = arr[5 - i][8];
-
-				for (int i = 0; i < 3; i++)
-					arr[3 + i][8] = threeTemp[i];
-
-			} else {
-				for (int i = 0; i < 3; i++)
-					threeTemp[i] = arr[0][3 + i];
-
-				for (int i = 0; i < 3; i++)
-					arr[0][i+3] = arr[i+3][8];
-
-				for (int i = 0; i < 3; i++)
-					arr[i+3][8] = arr[8][5-i];
-
-				for (int i = 0; i < 3; i++)
-					arr[8][5-i] = arr[5-i][0];
-
-				for (int i = 0; i < 3; i++)
-					arr[5 - i][0] = threeTemp[i];
-			}
-			bottomRotation(clock);
+			for (int i = 0; i < arr.length; i++)
+				System.out.println(Arrays.toString(arr[i]));
+			System.out.println();
 		}
 	}
 
-	// 옆면도 도는거 생각
-	public static void sideRotation(int row, int col, char clock) {
-		if (clock == '+') { // 시계
-			for (int i = row, ti = 0; i < row + 3; i++, ti++) {
-				for (int j = col, tj = 0; j < col + 3; j++, tj++)
-					temp[ti][tj] = arr[3 - j - 1][i];
-			}
-		} else {
-			for (int i = row, ti = 0; i < row + 3; i++, ti++) {
-				for (int j = col, tj = 0; j < col + 3; j++, tj++)
-					temp[ti][tj] = arr[j][3 - i - 1];
-			}
-		}
-		for (int i = row, ti = 0; i < row + 3; i++, ti++) {
-			for (int j = col, tj = 0; j < col + 3; j++, tj++)
-				arr[i][j] = temp[ti][tj];
+	public static void forward(Robot r, Queue<Robot> q) {
+		for (int i = 1; i <= 3; i++) {
+			int nx = r.x + xdir[r.dir] * i;
+			int ny = r.y + ydir[r.dir] * i;
+			if (nx >= 0 && ny >= 0 && nx < arr.length && ny < arr[0].length && arr[nx][ny] == 0) {
+				Robot rn = new Robot(nx, ny, r.dir, r.moveDist + 1);
+				arr[nx][ny] = 1;
+				q.offer(rn);
+			} else
+				break;
 		}
 	}
 
-	public static void bottomRotation(char clock) {
-		if (clock == '+') { // 시계
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++)
-					temp[i][j] = bottom[3 - j - 1][i];
-			}
-		} else {
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++)
-					temp[i][j] = bottom[j][3 - i - 1];
-			}
+	public static int dirInit(int dir) {
+		switch (dir) {
+		case 4:
+			return 0;
+		case 1:
+			return 1;
+		case 2:
+			return 3;
+		case 3:
+			return 2;
 		}
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++)
-				bottom[i][j] = temp[i][j];
-		}
+		return 0;
 	}
 
-	public static void recolor() {
-		for (int i = 0; i < 3; i++)
-			Arrays.fill(bottom[i], 'y');
+	static class Robot {
+		int x, y, dir, moveDist;
 
-		for (int i = 3; i < 6; i++) {
-			for (int j = 3; j < 6; j++)
-				arr[i][j] = 'w';
-		}
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 3; j < 6; j++)
-				arr[i][j] = 'o';
-		}
-
-		for (int i = 3; i < 6; i++) {
-			for (int j = 6; j < 9; j++)
-				arr[i][j] = 'b';
-		}
-
-		for (int i = 6; i < 9; i++) {
-			for (int j = 3; j < 6; j++)
-				arr[i][j] = 'r';
-		}
-
-		for (int i = 3; i < 6; i++) {
-			for (int j = 0; j < 3; j++)
-				arr[i][j] = 'g';
+		public Robot(int x, int y, int dir, int moveDist) {
+			this.x = x;
+			this.y = y;
+			this.dir = dir;
+			this.moveDist = moveDist;
 		}
 	}
 }
